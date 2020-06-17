@@ -1,5 +1,5 @@
 import numpy as np
-from controller_pack import Simulator
+from sail import Simulator
 
 
 if __name__ == '__main__':

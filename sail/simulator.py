@@ -1,8 +1,8 @@
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-from model_pack import Model
-from view_pack import View
+from .model_pack import Model
+from .view_pack import View
 
 
 class Simulator():
