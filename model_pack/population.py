@@ -8,10 +8,10 @@ class Population:
     Population contains all neural networks through the evolution process
     During simulation Population contains all ship models
     """    
-    def __init__(self, population_count):
+    def __init__(self, nn_architecture, population_size):
         self.nn_population = []        
-        for i in range(population_count):
-            self.nn_population.append(NeuralNetwork())
+        for i in range(population_size):
+            self.nn_population.append(NeuralNetwork(nn_architecture))
             
     def __iter__(self):
         return self.ship_population.__iter__()  

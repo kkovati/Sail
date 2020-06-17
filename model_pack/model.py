@@ -9,9 +9,8 @@ class Model:
     """
     Model handles all objects in the simulation
     """
-    def __init__(self):
-        self.population_count = 50
-        self.population = Population(self.population_count)
+    def __init__(self, nn_architecture, population_size):
+        self.population = Population(nn_architecture, population_size)
 
     def prepare_generation(self):
         """

@@ -1,5 +1,5 @@
 import numpy as np
-from controller_pack import Controller
+from controller_pack import Simulator
 
 
 if __name__ == '__main__':
@@ -7,7 +7,11 @@ if __name__ == '__main__':
     Main function
     """
     np.random.seed(0)
-    c = Controller()
-    c.run()                 
+    s = Simulator(nn_architecture=[2,6,4,1], 
+                  generation_count=200,
+                  population_size=50,
+                  mutation_rate=30)
+    
+    s.run()                 
   
-    c.view.mainloop()
+    s.view.mainloop() #!!!!

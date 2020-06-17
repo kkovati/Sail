@@ -1,14 +1,20 @@
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-from controller_pack.config import GENERATION_COUNT, MUTATION_RATE
 from model_pack import Model
 from view_pack import View
 
 
-class Controller:
-    def __init__(self):
-        self.model = Model()
+class Simulator():
+    """
+    Simulator is responsible for handling the simulation
+    Acts as a controller
+    """
+    def __init__(self, nn_architecture, generation_count, population_size, 
+                 mutation_rate):
+        self.generation_count = generation_count
+        self.mutation_rate = mutation_rate
+        self.model = Model(nn_architecture, population_size)
         self.view = View()
         
     def run(self):
@@ -16,19 +22,19 @@ class Controller:
         Runs evolution for given numbers of generations
         """
         # test results of all generations of 3 test cases
-        self.test_results = np.zeros((3, GENERATION_COUNT), dtype ='int32')
-        for i in range(GENERATION_COUNT):
-            display = i > 250            
+        self.test_results = np.zeros((3, self.generation_count), dtype ='int32')
+        for i in range(self.generation_count):
+            display = i > 3           
             self.run_generation(i, display)
         # create graph of results
-        t = range(GENERATION_COUNT)
+        t = range(self.generation_count)
         plt.plot(t, self.test_results[0], 'r')
         plt.plot(t, self.test_results[1], 'g')
         plt.plot(t, self.test_results[2], 'b')        
         plt.show()       
             
         self.model.save('best_ship.npz')
-        self.view.mainloop()
+        self.view.mainloop() #!!!!
   
     def run_generation(self, generation_index, display=False):
         """
@@ -86,7 +92,8 @@ class Controller:
         osciallation in the performance of the best neural network in each
         generation
         """
-        mr = MUTATION_RATE * (1 - 0.5 * (generation_index / GENERATION_COUNT))
+        mr = self.mutation_rate * (1 - 0.5 * (generation_index / 
+                                              self.generation_count))
         self.model.mutate(mr) 
           
     

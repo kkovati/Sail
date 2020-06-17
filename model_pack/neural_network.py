@@ -1,22 +1,20 @@
 import numpy as np
-from controller_pack import NN_ARCHITECTURE
 
 
 class NeuralNetwork:
     """
     The neural network which controls the ship
     """    
-    def __init__(self):
+    def __init__(self, nn_architecture):
         """
         Randomly initializes the neural network parameters
         The layers of the network are hard-coded
-        """
-        layer_sizes = NN_ARCHITECTURE        
+        """        
         self.weights = []
         self.biases = []
-        for i in range(len(layer_sizes) - 1):
-            self.weights.append(np.random.uniform(-0.1, 0.1, size=(layer_sizes[i], layer_sizes[i+1])))
-            self.biases.append(np.random.uniform(-0.1, 0.1, size=layer_sizes[i + 1]))
+        for i in range(len(nn_architecture) - 1):
+            self.weights.append(np.random.uniform(-0.1, 0.1, size=(nn_architecture[i], nn_architecture[i+1])))
+            self.biases.append(np.random.uniform(-0.1, 0.1, size=nn_architecture[i + 1]))
             
     def predict(self, ship_buoy_angle, wind_angle):
         """

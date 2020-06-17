@@ -1,2 +1,2 @@
 # Sail
- Neural network learns to sail
+ Neural network learns to sail with genetic algorithm

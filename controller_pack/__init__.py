@@ -1,2 +1,2 @@
 from .config import *
-from .controller import Controller
+from .controller import Simulator
