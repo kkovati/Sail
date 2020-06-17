@@ -2,18 +2,19 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from .model_pack import Model
-from .view_pack import View
+from .view_pack import View, LoadingBar
 
 
 class Simulator():
     """
     Simulator is responsible for handling the simulation
-    Acts as a controller
+    Acts as a controller between models and views
     """
     def __init__(self, nn_architecture, generation_count, population_size, 
                  mutation_rate):
         self.generation_count = generation_count
         self.mutation_rate = mutation_rate
+        # init model and view
         self.model = Model(nn_architecture, population_size)
         self.view = View()
         
@@ -22,15 +23,13 @@ class Simulator():
         Runs evolution for given numbers of generations
         """
         # test results of all generations of 3 test cases
-        self.test_results = np.zeros((3, self.generation_count), dtype ='int32')
+        self.test_results = np.zeros((self.generation_count), dtype ='int32')
         for i in range(self.generation_count):
-            display = i > 3           
+            display = i > 45          
             self.run_generation(i, display)
         # create graph of results
         t = range(self.generation_count)
-        plt.plot(t, self.test_results[0], 'r')
-        plt.plot(t, self.test_results[1], 'g')
-        plt.plot(t, self.test_results[2], 'b')        
+        plt.plot(t, self.test_results)        
         plt.show()       
             
         self.model.save('best_ship.npz')
@@ -44,6 +43,7 @@ class Simulator():
         Runs the 3 test cases for results with the best neural network
         """
         print('------------------------------------------')
+        
         # normal generation simulation in random environment
         print(generation_index, '.generation')
         self.model.prepare_generation()
@@ -53,34 +53,37 @@ class Simulator():
         self.view.clear()
         self.evaluate()
         self.mutate(generation_index)
-        # testing with the 3 test cases
-        for test_id in range(3):            
-            print('Test case no.', test_id, 'of', generation_index, 
-                  '.generation')
-            self.model.prepare_test(test_id)            
-            self.view.prepare_generation(self.model, display, 
-                                         generation_index, test=True)
-            time = self.run_simulation(test=True)
-            print('Result:', time)
-            self.test_results[test_id][generation_index] = time
-            self.view.clear()  
+        
+        # test current generation            
+        print('Test of', generation_index, '.generation')
+        self.model.prepare_test()            
+        self.view.prepare_generation(self.model, display, 
+                                     generation_index, test=True)
+        time = self.run_simulation(test=True)
+        print('OLD Result:', time)
+        
+        ship = self.model.population.ship_population[0]
+        print('curr_buoy_index', ship.curr_buoy_index)
+        print('min_distance', ship.min_distance)
+        print('time', ship.time)
+        
+        self.test_results[generation_index] = time
+        self.view.clear()  
         
     def run_simulation(self, test=False):
         """
         Runs simulation by calls model.update() and view.update() methods
         for 1000 time units at most
         """
+        lb = LoadingBar(1000, 'Simulation')
         for t in range(1000):
             self.model.update(t)
             self.view.update(self.model, t)
             # stop simulation if all ships reached all the targets
             if self.model.population.finished:                
-                return t
+                return t            
             if not test:
-                message = (str(t + 1) + "/1000 Simulation time |" + 
-                           "|" * int(30 * t / 1000) + 
-                           "." * int(30 * (1 - (t / 1000))) + "|  ")                
-                sys.stdout.write('\r' + message) 
+                lb()             
         return 1000
         
     def evaluate(self):

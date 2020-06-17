@@ -83,16 +83,19 @@ class Ship:
         else:
             self.speed = 12 * (wind_angle + math.pi) / math.pi
         self.speed += min(self.speed, 8) # speed maximum set to 8
+        
         # Update orientation by steer
         steer = controls['steer']
         if abs(steer) > 0.1: # penalty for turning
             self.speed /= 2
+            
         # A derviative member added to steer thus making a PD controller 
         # to prevent oscillation of orientation around the target angle
         D = -0.7
         steer += D * (steer - self.prev_steer)
         self.prev_steer = steer
         self.orientation += steer 
+        
         # Update position by speed and orientation
         cangle = cmath.exp(self.orientation * 1j) # angle in radians
         cspeed = cangle * complex(self.speed, 0)

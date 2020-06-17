@@ -27,34 +27,27 @@ class Model:
         self.population.prepare_generation(self.buoys, self.wind, 
                                            start_position) 
         
-    def prepare_test(self, test_id):
+    def prepare_test(self):
         """
         Initializes ship start postitions, wind direction and buoy positions 
         for testing
-        """
-        self.wind = Wind()
-        self.buoys = Buoys(1)
+        """        
+        self.buoys = Buoys(buoy_count=4)
         self.buoys[0].x = 1000
-        self.buoys[0].y = 380
-        start_position = {'x': 100, 'y': 380, 'orient': 0.18}        
-        if test_id == 0: 
-            # downwind
-            self.wind.orientation = 0
-            self.wind.x = 1
-            self.wind.y = 0           
-        elif test_id == 1:  
-            # upwind
-            self.wind.orientation = math.pi
-            self.wind.x = -1
-            self.wind.y = 0        
-        elif test_id == 2:
-            # cross-wind
-            self.wind.orientation = math.pi / 2
-            self.wind.x = 0
-            self.wind.y = 1 
-        else:
-            raise NotImplementedError('Test case no. ' + 
-                                      '{} is not implemented'.format(test_id))
+        self.buoys[0].y = 100
+        self.buoys[1].x = 1000
+        self.buoys[1].y = 650
+        self.buoys[2].x = 100
+        self.buoys[2].y = 650
+        self.buoys[3].x = 100
+        self.buoys[3].y = 100
+        
+        self.wind = Wind()       
+        self.wind.orientation = 0
+        self.wind.x = 1
+        self.wind.y = 0 
+        
+        start_position = {'x': 100, 'y': 100, 'orient': 0.18}    
         self.population.prepare_test(self.buoys, self.wind, start_position)
         
     def update(self, time):
