@@ -53,7 +53,6 @@ class Population:
         self.nn_population = ordered_nn_population
         print('Best results:')
         print('{:<6s} {:<10s} {:<10s}'.format('Buoys', 'Distance', 'Time'))
-        # print('Buoys\tDistance\tTime')
         for i in range(5):
             ship = ordered_ship_population[i]
             print('{:<6s} {:<10s} {:<10s}'.format(
@@ -82,9 +81,15 @@ class Population:
         self.nn_population = new_nn_population            
             
     def save(self, filename):
+        """
+        Save best neural network of current generation into .npz file
+        """
         self.nn_population[0].save(filename)
         
     def load(self, filename, number):
+        """
+        Load neural network from appropriate .npz file 
+        """
         self.nn_population = []
         for i in range(number):
             nn = NeuralNetwork()

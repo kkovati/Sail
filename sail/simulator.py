@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from .model_pack import Model
@@ -12,18 +11,33 @@ class Simulator():
     """
     def __init__(self, nn_architecture, generation_count, population_size, 
                  mutation_rate):
-        self.nn_architecture = nn_architecture
+        """
+        Simulates the evolution of the ships learning to sail
+        Parameters
+        ----------
+        nn_architecture : list of integer 
+            neuron number of each hidden layer in the neural network
+        generation_count : int
+            number of generations during the evolution
+        population_size : int 
+            number of instances (ships) in one generation
+        mutation_rate : int
+            change of the neural network parameters during mutation in 
+            percentage
+        """
+        self.nn_architecture = [2] + nn_architecture + [1]
         self.generation_count = generation_count
         self.population_size = (population_size // 10) * 10
         self.mutation_rate = mutation_rate
         
         # init model and view
-        self.model = Model(nn_architecture, self.population_size)
+        self.model = Model(self.nn_architecture, self.population_size)
         self.view = View()
         
     def run(self):
         """
-        Runs evolution for given numbers of generations
+        Runs evolution for given numbers of generations and saves the results
+        of the current configuration
         """
         # test results of the generations
         self.test_results = np.zeros((self.generation_count), dtype ='int32')
@@ -35,7 +49,7 @@ class Simulator():
             
         self.plot_results()      
             
-        self.model.save('best_ship.npz') #!!!
+        self.model.save('best_ship.npz') 
         self.view.mainloop() 
   
     def run_generation(self, generation_index, display=False):
@@ -113,10 +127,18 @@ class Simulator():
                       str(self.generation_count) + '\nPop size: ' + 
                       str(self.population_size) + '\nMutation: ' + 
                       str(self.mutation_rate))
-        plt.figtext(0.7, 0.15, info_label)        
+        plt.figtext(0.7, 0.15, info_label)          
+        y = range(self.generation_count)
+        plt.plot(y, self.test_results)        
         
-        t = range(self.generation_count)
-        plt.plot(t, self.test_results)        
+        # save figure
+        filename = ('simulation_results/' + 
+                    str(self.nn_architecture) + '_' + 
+                    str(self.generation_count) + '_' + 
+                    str(self.population_size) + '_' + 
+                    str(self.mutation_rate))        
+        plt.savefig(filename, dpi=300)
+        
         plt.show() 
           
     
