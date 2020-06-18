@@ -12,8 +12,11 @@ class Simulator():
     """
     def __init__(self, nn_architecture, generation_count, population_size, 
                  mutation_rate):
+        self.nn_architecture = nn_architecture
         self.generation_count = generation_count
+        self.population_size = population_size
         self.mutation_rate = mutation_rate
+        
         # init model and view
         self.model = Model(nn_architecture, population_size)
         self.view = View()
@@ -22,15 +25,15 @@ class Simulator():
         """
         Runs evolution for given numbers of generations
         """
-        # test results of all generations of 3 test cases
+        # test results of the generations
         self.test_results = np.zeros((self.generation_count), dtype ='int32')
+        
+        # run the generations
         for i in range(self.generation_count):
-            display = i > 45          
+            display = i > 30          
             self.run_generation(i, display)
-        # create graph of results
-        t = range(self.generation_count)
-        plt.plot(t, self.test_results)        
-        plt.show()       
+            
+        self.plot_results()      
             
         self.model.save('best_ship.npz')
         self.view.mainloop() #!!!!
@@ -59,15 +62,17 @@ class Simulator():
         self.model.prepare_test()            
         self.view.prepare_generation(self.model, display, 
                                      generation_index, test=True)
-        time = self.run_simulation(test=True)
-        print('OLD Result:', time)
+        self.run_simulation(test=True)        
         
         ship = self.model.population.ship_population[0]
         print('curr_buoy_index', ship.curr_buoy_index)
         print('min_distance', ship.min_distance)
         print('time', ship.time)
         
-        self.test_results[generation_index] = time
+        distance = 550 * (ship.curr_buoy_index + 1) - ship.min_distance
+        print('total distance', distance)
+        
+        self.test_results[generation_index] = distance
         self.view.clear()  
         
     def run_simulation(self, test=False):
@@ -81,10 +86,9 @@ class Simulator():
             self.view.update(self.model, t)
             # stop simulation if all ships reached all the targets
             if self.model.population.finished:                
-                return t            
+                return            
             if not test:
                 lb()             
-        return 1000
         
     def evaluate(self):
         self.model.evaluate()
@@ -98,5 +102,21 @@ class Simulator():
         mr = self.mutation_rate * (1 - 0.5 * (generation_index / 
                                               self.generation_count))
         self.model.mutate(mr) 
+        
+    def plot_results(self):
+        
+        # plt.figure(dpi=300) # for high resolution graphs
+        plt.title('Best ship travel distance of each generation')
+        plt.xlabel('Generation')
+        plt.ylabel('Distance')
+        info_label = ('NN: ' + str(self.nn_architecture) + '\nGens: ' + 
+                      str(self.generation_count) + '\nPop size: ' + 
+                      str(self.population_size) + '\nMutation: ' + 
+                      str(self.mutation_rate))
+        plt.figtext(0.7, 0.7, info_label)        
+        
+        t = range(self.generation_count)
+        plt.plot(t, self.test_results)        
+        plt.show() 
           
     

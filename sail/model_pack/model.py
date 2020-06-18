@@ -33,13 +33,13 @@ class Model:
         for testing
         """        
         self.buoys = Buoys(buoy_count=4)
-        self.buoys[0].x = 1000
+        self.buoys[0].x = 825
         self.buoys[0].y = 100
-        self.buoys[1].x = 1000
+        self.buoys[1].x = 825
         self.buoys[1].y = 650
-        self.buoys[2].x = 100
+        self.buoys[2].x = 275
         self.buoys[2].y = 650
-        self.buoys[3].x = 100
+        self.buoys[3].x = 275
         self.buoys[3].y = 100
         
         self.wind = Wind()       
@@ -47,7 +47,7 @@ class Model:
         self.wind.x = 1
         self.wind.y = 0 
         
-        start_position = {'x': 100, 'y': 100, 'orient': 0.18}    
+        start_position = {'x': 275, 'y': 100, 'orient': 0.18}    
         self.population.prepare_test(self.buoys, self.wind, start_position)
         
     def update(self, time):
