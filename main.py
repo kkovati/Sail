@@ -11,9 +11,9 @@ if __name__ == '__main__':
     
     for nna in nn_architectures:
         s = Simulator(nn_architecture=nna, 
-                      generation_count=50,
+                      generation_count=5,
                       population_size=80,
                       mutation_rate=30)    
-        s.run()                 
+        s.run(display=False)                 
   
 

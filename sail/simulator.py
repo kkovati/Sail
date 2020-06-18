@@ -6,13 +6,13 @@ from .view_pack import View, LoadingBar
 
 class Simulator():
     """
-    Simulator is responsible for handling the simulation
+    Simulates the evolution of the ships learning to sail
     Acts as a controller between models and views
     """
     def __init__(self, nn_architecture, generation_count, population_size, 
                  mutation_rate):
         """
-        Simulates the evolution of the ships learning to sail
+        Initalizes Model and View
         Parameters
         ----------
         nn_architecture : list of integer 
@@ -34,7 +34,7 @@ class Simulator():
         self.model = Model(self.nn_architecture, self.population_size)
         self.view = View()
         
-    def run(self):
+    def run(self, display=False):
         """
         Runs evolution for given numbers of generations and saves the results
         of the current configuration
@@ -43,14 +43,14 @@ class Simulator():
         self.test_results = np.zeros((self.generation_count), dtype ='int32')
         
         # run the generations
-        for i in range(self.generation_count):
-            display = i > 3000          
+        for i in range(self.generation_count):          
             self.run_generation(i, display)
             
         self.plot_results()      
             
         self.model.save('best_ship.npz') 
-        self.view.mainloop() 
+        # self.view.mainloop()
+        self.view.root.destroy()
   
     def run_generation(self, generation_index, display=False):
         """
@@ -72,19 +72,16 @@ class Simulator():
         self.mutate(generation_index)
         
         # test current generation            
-        print('Test of', generation_index, '.generation')
+        print('\nTest of', generation_index, '.generation')
         self.model.prepare_test()            
         self.view.prepare_generation(self.model, display, 
                                      generation_index, test=True)
         self.run_simulation(test=True)        
         
-        ship = self.model.population.ship_population[0]
-        print('curr_buoy_index', ship.curr_buoy_index)
-        print('min_distance', ship.min_distance)
-        print('time', ship.time)
-        
+        # calculate test results
+        ship = self.model.population.ship_population[0]       
         distance = 550 * (ship.curr_buoy_index + 1) - ship.min_distance
-        print('total distance', distance)
+        print('Distance sailed on test track:\n', distance)
         
         self.test_results[generation_index] = distance
         self.view.clear()  

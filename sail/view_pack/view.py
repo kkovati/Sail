@@ -35,14 +35,6 @@ class View:
         self.next_gen_but['command'] = lambda: self.stop_update()
         self.next_gen_but.pack(side='top')
         
-        
-        self.clear_button = tk.Button(self.left_frame, text="Clear", 
-                                      padx=5, pady=5)
-        self.clear_button.pack()
-        self.info_label = tk.Label(self.left_frame, text='info label', 
-                                   bg='yellow', height=42, padx=10, pady=10)
-        self.info_label.pack(side='bottom')
-        
         # Right Frame with Canvas
         self.right_frame = tk.Frame(self.root)
         self.right_frame.pack(fill=None, expand=False)
