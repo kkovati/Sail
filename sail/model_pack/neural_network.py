@@ -40,7 +40,7 @@ class NeuralNetwork:
         Mutates the neural network by multiplying all the weights and biases
         with a random number around 1 and between the percentage values
         Parameters:
-        - percentage : int - sepcifies the magnitude of mutation in percentage
+        - percentage : int - specifies the magnitude of mutation in percentage
         Returns:
         - None
         Side effects:

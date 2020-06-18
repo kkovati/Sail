@@ -29,7 +29,7 @@ class Model:
         
     def prepare_test(self):
         """
-        Initializes ship start postitions, wind direction and buoy positions 
+        Initializes ship start postition, wind direction and buoy positions 
         for testing
         """        
         self.buoys = Buoys(buoy_count=4)

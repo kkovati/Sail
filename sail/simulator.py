@@ -14,11 +14,11 @@ class Simulator():
                  mutation_rate):
         self.nn_architecture = nn_architecture
         self.generation_count = generation_count
-        self.population_size = population_size
+        self.population_size = (population_size // 10) * 10
         self.mutation_rate = mutation_rate
         
         # init model and view
-        self.model = Model(nn_architecture, population_size)
+        self.model = Model(nn_architecture, self.population_size)
         self.view = View()
         
     def run(self):
@@ -30,13 +30,13 @@ class Simulator():
         
         # run the generations
         for i in range(self.generation_count):
-            display = i > 30          
+            display = i > 3000          
             self.run_generation(i, display)
             
         self.plot_results()      
             
-        self.model.save('best_ship.npz')
-        self.view.mainloop() #!!!!
+        self.model.save('best_ship.npz') #!!!
+        self.view.mainloop() 
   
     def run_generation(self, generation_index, display=False):
         """
@@ -113,7 +113,7 @@ class Simulator():
                       str(self.generation_count) + '\nPop size: ' + 
                       str(self.population_size) + '\nMutation: ' + 
                       str(self.mutation_rate))
-        plt.figtext(0.7, 0.7, info_label)        
+        plt.figtext(0.7, 0.15, info_label)        
         
         t = range(self.generation_count)
         plt.plot(t, self.test_results)        

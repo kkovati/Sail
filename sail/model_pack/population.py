@@ -9,7 +9,8 @@ class Population:
     During simulation Population contains all ship models
     """    
     def __init__(self, nn_architecture, population_size):
-        self.nn_population = []        
+        self.nn_population = []  
+        self.population_size = population_size
         for i in range(population_size):
             self.nn_population.append(NeuralNetwork(nn_architecture))
             
@@ -62,22 +63,23 @@ class Population:
             
     def mutate(self, mutation_rate):
         """
-        Creates the new generation based on the results of the simulation
-        Elitism: the best 5 instances goes directly to the next generation
-        The other 45 instances created by mutating the best 5
+        Creates the new generation based on the results of the former
+        generation's simulation results, using the most fit instances
+        Elitism: the best 20% of the instances goes directly to the next 
+                 generation
+        The other 80% of instances created by mutating the best 20%
         """
         new_nn_population = []        
         # elitism
-        for nn in self.nn_population[0:10]:
+        for nn in self.nn_population[0:int(self.population_size * 0.2)]:
             new_nn_population.append(nn) 
         # mutation
-        for nn in self.nn_population[0:10]:
+        for nn in self.nn_population[0:int(self.population_size * 0.2)]:
             for i in range(4):
                 temp_nn = copy.deepcopy(nn)
                 temp_nn.mutate(mutation_rate) 
                 new_nn_population.append(temp_nn)
-        self.nn_population = new_nn_population 
-        print('pop_size:', len(self.nn_population))           
+        self.nn_population = new_nn_population            
             
     def save(self, filename):
         self.nn_population[0].save(filename)

@@ -21,10 +21,10 @@ if __name__ == '__main__':
     np.random.seed(0)
     
     s = Simulator(nn_architecture=[2,6,4,1], 
-                  generation_count=50,
-                  population_size=50,
+                  generation_count=3,
+                  population_size=45,
                   mutation_rate=30)
     
     s.run()                 
   
-    #s.view.mainloop() #!!!!
+
