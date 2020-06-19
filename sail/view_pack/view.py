@@ -6,7 +6,10 @@ from .wind_view import WindView
 
 
 class View:
-    
+    """
+    View class is responsible for all display functionalities on GUI
+    Handles all objects visualization
+    """
     def __init__(self):
         """
         Initializes and opens the application window

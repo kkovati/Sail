@@ -15,7 +15,7 @@ class Simulator():
         Initalizes Model and View
         Parameters
         ----------
-        nn_architecture : list of integer 
+        nn_architecture : list of integers
             neuron number of each hidden layer in the neural network
         generation_count : int
             number of generations during the evolution
@@ -79,8 +79,11 @@ class Simulator():
         self.run_simulation(test=True)        
         
         # calculate test results
-        ship = self.model.population.ship_population[0]       
-        distance = 550 * (ship.curr_buoy_index + 1) - ship.min_distance
+        ship = self.model.population.ship_population[0]  
+        if ship.curr_buoy_index == 4:
+            distance = 2200
+        else:
+            distance = 550 * (ship.curr_buoy_index + 1) - ship.min_distance
         print('Distance sailed on test track:\n', distance)
         
         self.test_results[generation_index] = distance
@@ -124,7 +127,8 @@ class Simulator():
                       str(self.generation_count) + '\nPop size: ' + 
                       str(self.population_size) + '\nMutation: ' + 
                       str(self.mutation_rate))
-        plt.figtext(0.7, 0.15, info_label)          
+        plt.gca().set_ylim([200,2200])
+        plt.figtext(0.65, 0.15, info_label)          
         y = range(self.generation_count)
         plt.plot(y, self.test_results)        
         
