@@ -38,6 +38,10 @@ class Simulator():
         """
         Runs evolution for given numbers of generations and saves the results
         of the current configuration
+        Parameters
+        ----------
+        display : boolean
+            !!!
         """
         # test results of the generations
         self.test_results = np.zeros((self.generation_count), dtype ='int32')
@@ -54,24 +58,27 @@ class Simulator():
   
     def run_generation(self, generation_index, display=False):
         """
-        Runs a single generation simulation
+        Runs a single generation's simulation
         Evaluates the neuaral network population by fitness
         Mutates the population
-        Runs the 3 test cases for results with the best neural network
+        Runs the 3 test cases for results with the best neural network        
         """
         print('------------------------------------------')
-        
-        # normal generation simulation in random environment
         print(generation_index, '.generation')
-        self.model.prepare_generation()
-        self.view.prepare_generation(self.model, display, generation_index)
-        self.run_simulation()
-        print('')
-        self.view.clear()
-        self.evaluate()
+        
+        # normal generation simulation in random environment        
+        for i in range(3):
+            print('- {}. race'.format(i + 1))
+            self.model.prepare_generation()
+            self.view.prepare_generation(self.model, display, generation_index)
+            self.run_simulation()
+            print('')
+            self.view.clear()
+            self.evaluate()
+            
         self.mutate(generation_index)
         
-        # test current generation            
+        # test run of current generation's best ship
         print('\nTest of', generation_index, '.generation')
         self.model.prepare_test()            
         self.view.prepare_generation(self.model, display, 
@@ -84,7 +91,7 @@ class Simulator():
             distance = 2200
         else:
             distance = 550 * (ship.curr_buoy_index + 1) - ship.min_distance
-        print('Distance sailed on test track:\n', distance)
+        print('Distance sailed on test track:\n{}'.format(int(distance)))
         
         self.test_results[generation_index] = distance
         self.view.clear()  

@@ -15,6 +15,7 @@ class NeuralNetwork:
         for i in range(len(nn_architecture) - 1):
             self.weights.append(np.random.uniform(-0.1, 0.1, size=(nn_architecture[i], nn_architecture[i+1])))
             self.biases.append(np.random.uniform(-0.1, 0.1, size=nn_architecture[i + 1]))
+        self.rank = 0
             
     def predict(self, ship_buoy_angle, wind_angle):
         """

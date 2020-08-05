@@ -41,20 +41,25 @@ class Population:
             
     def evaluate(self):
         """
-        Orders the list of ship by fitness
+        Orders the list of ships by fitness
         Fitness is based on the number of buoys reached, the minimum distance
         to the next target buoy and the time neeeded to reach all the buoys
         """
         ordered_ship_population = sorted(self.ship_population, 
                    key=lambda x: (-x.curr_buoy_index, x.min_distance, x.time))
-        ordered_nn_population = []
-        for ship in ordered_ship_population:
-            ordered_nn_population.append(ship.nn)            
-        self.nn_population = ordered_nn_population
+        for rank, ship in enumerate(ordered_ship_population):
+            ship.nn.rank += rank
+        
+# =============================================================================
+#         ordered_nn_population = []
+#         for ship in ordered_ship_population:
+#             ordered_nn_population.append(ship.nn)            
+#         self.nn_population = ordered_nn_population
+# =============================================================================
+        
         print('Best results:')
         print('{:<6s} {:<10s} {:<10s}'.format('Buoys', 'Distance', 'Time'))
-        for i in range(5):
-            ship = ordered_ship_population[i]
+        for ship in ordered_ship_population[0:5]:
             print('{:<6s} {:<10s} {:<10s}'.format(
                                             str(ship.curr_buoy_index), 
                                             str(int(ship.min_distance)), 
@@ -68,6 +73,10 @@ class Population:
                  generation
         The other 80% of instances created by mutating the best 20%
         """
+        # sort neural network population
+        self.nn_population = sorted(self.nn_population, 
+                                    key=lambda nn: nn.rank)
+        
         new_nn_population = []        
         # elitism
         for nn in self.nn_population[0:int(self.population_size * 0.2)]:
@@ -78,7 +87,12 @@ class Population:
                 temp_nn = copy.deepcopy(nn)
                 temp_nn.mutate(mutation_rate) 
                 new_nn_population.append(temp_nn)
-        self.nn_population = new_nn_population            
+        # population size of each generation must remain constant
+        assert len(self.nn_population) == len(new_nn_population)
+        self.nn_population = new_nn_population 
+        # reset neural networks' rank
+        for nn in self.nn_population:
+            nn.rank = 0
             
     def save(self, filename):
         """

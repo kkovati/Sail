@@ -20,7 +20,7 @@ class LoadingBar:
                 '|   ')                
         sys.stdout.write('\r' + line)
         if i == self.size:
-            print('')
+            # delete loading bar
+            sys.stdout.write('\r' + (50 * ' '))
+            sys.stdout.write('\r')
 
-  
-    
