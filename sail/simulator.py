@@ -30,8 +30,8 @@ class Simulator():
         self.population_size = (population_size // 10) * 10
         self.mutation_rate = mutation_rate
         
-        # init model and view
-        self.model = Model(self.nn_architecture, self.population_size)
+        # init Model and View
+        self.model = Model(self.nn_architecture, self.population_size) 
         self.view = View()
         
     def run(self, display=False):
@@ -43,7 +43,7 @@ class Simulator():
         display : boolean
             !!!
         """
-        # test results of the generations
+        # test results of each generations
         self.test_results = np.zeros((self.generation_count), dtype ='int32')
         
         # run the generations
@@ -51,8 +51,9 @@ class Simulator():
             self.run_generation(i, display)
             
         self.plot_results()      
-            
-        self.model.save('best_ship.npz') 
+           
+        # !!!!
+        #self.model.save('simulation_results/best_ship.npz') 
         # self.view.mainloop()
         self.view.root.destroy()
   
@@ -67,7 +68,7 @@ class Simulator():
         print(generation_index, '.generation')
         
         # normal generation simulation in random environment        
-        for i in range(3):
+        for i in range(5):
             print('- {}. race'.format(i + 1))
             self.model.prepare_generation()
             self.view.prepare_generation(self.model, display, generation_index)
@@ -76,7 +77,7 @@ class Simulator():
             self.view.clear()
             self.evaluate()
             
-        self.mutate(generation_index)
+        self.evolve(generation_index)
         
         # test run of current generation's best ship
         print('\nTest of', generation_index, '.generation')
@@ -92,8 +93,12 @@ class Simulator():
         else:
             distance = 550 * (ship.curr_buoy_index + 1) - ship.min_distance
         print('Distance sailed on test track:\n{}'.format(int(distance)))
-        
+        # save best ship's test distance into test_results
         self.test_results[generation_index] = distance
+        # !!!
+        if distance > 1800:
+            print('DISTANCE OVER 1800')
+            self.model.save(generation_index, distance)
         self.view.clear()  
         
     def run_simulation(self, test=False):
@@ -114,15 +119,15 @@ class Simulator():
     def evaluate(self):
         self.model.evaluate()
         
-    def mutate(self, generation_index):
+    def evolve(self, generation_index):
         """
         As the evolution progress the mutation rate decays to prevent the
         osciallation in the performance of the best neural network in each
         generation
         """
-        mr = self.mutation_rate * (1 - 0.5 * (generation_index / 
+        mr = self.mutation_rate * (1 - 0.1 * (generation_index / 
                                               self.generation_count))
-        self.model.mutate(mr) 
+        self.model.evolve(mr) 
         
     def plot_results(self):
         
@@ -130,10 +135,10 @@ class Simulator():
         plt.title('Best ship travel distance of each generation')
         plt.xlabel('Generation')
         plt.ylabel('Distance')
-        info_label = ('NN: ' + str(self.nn_architecture) + '\nGens: ' + 
-                      str(self.generation_count) + '\nPop size: ' + 
-                      str(self.population_size) + '\nMutation: ' + 
-                      str(self.mutation_rate))
+        info_label = ('NN: ' + str(self.nn_architecture).replace(' ','') + 
+                      '\nGens: ' + str(self.generation_count) + 
+                      '\nPop size: ' + str(self.population_size) + 
+                      '\nMutation: ' + str(self.mutation_rate))
         plt.gca().set_ylim([200,2200])
         plt.figtext(0.65, 0.15, info_label)          
         y = range(self.generation_count)
@@ -141,12 +146,37 @@ class Simulator():
         
         # save figure
         filename = ('simulation_results/' + 
-                    str(self.nn_architecture) + '_' + 
+                    str(self.nn_architecture).replace(' ','') + '_' + 
                     str(self.generation_count) + '_' + 
                     str(self.population_size) + '_' + 
                     str(self.mutation_rate))        
         plt.savefig(filename, dpi=300)
         
         plt.show() 
+        
+    @classmethod
+    def load_and_test(cls, filename):
+        # init Model and View
+        model = Model([], 1) 
+        view = View()
           
-    
+        # inject loaded ship
+        model.load(filename) 
+        
+        # test run of current generation's best ship
+        print('\nTest of', filename)
+        model.prepare_test()            
+        view.prepare_generation(model, display=True, generation_index=-1, 
+                                test=True)
+        
+        # run test simulation
+        for t in range(1000):
+            model.update(t)
+            view.update(model, t)
+            # stop simulation if ship reached all the targets
+            if model.population.finished:                
+                break            
+        
+        view.root.destroy()
+     
+        

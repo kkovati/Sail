@@ -9,7 +9,8 @@ class NeuralNetwork:
         """
         Randomly initializes the neural network parameters
         The layers of the network are hard-coded
-        """        
+        """  
+        self.nn_architecture = nn_architecture
         self.weights = []
         self.biases = []
         for i in range(len(nn_architecture) - 1):
@@ -52,11 +53,21 @@ class NeuralNetwork:
             w *= np.random.uniform(r, 1/r, size=w.shape)
             b *= np.random.uniform(r, 1/r, size=b.shape)
             
-    def save(self, filename):
+    def crossover(self, nn):
+        parameters = zip(self.weights, nn.weights, self.biases, nn.biases)
+        for w0, w1, b0, b1 in parameters:
+            w0 = (w0 + w1) / 2
+            b0 = (b0 + b1) / 2
+            
+    def save(self, generation, distance):
         """
         Saves the neural network into .npz file
         """
-        np.savez_compressed(filename, 
+        filename = ('simulation_results/' + 
+                    str(self.nn_architecture).replace(' ','') + '_'
+                    + str(generation) + '_' + str(int(distance)) + '.npz')        
+        np.savez_compressed(filename,
+                            nn_architecture=np.array(self.nn_architecture),
                             weights=np.array(self.weights), 
                             biases=np.array(self.biases))
         

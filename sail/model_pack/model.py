@@ -56,14 +56,14 @@ class Model:
     def evaluate(self):
         self.population.evaluate()
         
-    def mutate(self, mutation_rate):
-        self.population.mutate(mutation_rate)
+    def evolve(self, mutation_rate):
+        self.population.evolve(mutation_rate)
         
-    def save(self, filename):
-        self.population.save(filename)
+    def save(self, generation, distance):
+        self.population.save(generation, distance)
         
-    def load(self, filename, number):
-        self.population.load(filename, number)
+    def load(self, filename):
+        self.population.load(filename)
         
     
 
