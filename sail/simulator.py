@@ -10,7 +10,7 @@ class Simulator():
     Acts as a controller between models and views
     """
     def __init__(self, nn_architecture, generation_count, population_size, 
-                 mutation_rate):
+                 mutation_rate, random_race, race_count=1):
         """
         Initalizes Model and View
         Parameters
@@ -24,11 +24,14 @@ class Simulator():
         mutation_rate : int
             change of the neural network parameters during mutation in 
             percentage
+            !!!
         """
         self.nn_architecture = [2] + nn_architecture + [1]
         self.generation_count = generation_count
         self.population_size = (population_size // 10) * 10
         self.mutation_rate = mutation_rate
+        self.random_race = random_race
+        self.race_count = race_count if random_race else 1
         
         # init Model and View
         self.model = Model(self.nn_architecture, self.population_size) 
@@ -67,10 +70,10 @@ class Simulator():
         print('------------------------------------------')
         print(generation_index, '.generation')
         
-        # normal generation simulation in random environment        
-        for i in range(5):
+        # normal generation simulation in a standard or random environment        
+        for i in range(self.race_count):
             print('- {}. race'.format(i + 1))
-            self.model.prepare_generation()
+            self.model.prepare_generation(self.random_race)
             self.view.prepare_generation(self.model, display, generation_index)
             self.run_simulation()
             print('')

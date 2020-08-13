@@ -29,9 +29,11 @@ if __name__ == '__main__':
     s = Simulator(nn_architecture=[8,6], 
                       generation_count=30,
                       population_size=100,
-                      mutation_rate=30)    
-    s.run(display=False) 
-    
+                      mutation_rate=30,
+                      random_race=False,
+                      race_count=1)    
+    s.run(display=True) 
+
     
 # =============================================================================
 #     Simulator.load_and_test('simulation_results/[2,10,6,1]_21_2200.npz')
