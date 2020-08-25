@@ -31,7 +31,8 @@ class Simulator():
         self.population_size = (population_size // 10) * 10
         self.mutation_rate = mutation_rate
         self.random_race = random_race
-        self.race_count = race_count if random_race else 1
+        # there are 3 pre-defined race tracks
+        self.race_count = race_count if random_race else 3
         
         # init Model and View
         self.model = Model(self.nn_architecture, self.population_size) 
@@ -50,7 +51,7 @@ class Simulator():
         self.test_results = np.zeros((self.generation_count), dtype ='int32')
         
         # run the generations
-        for i in range(self.generation_count):          
+        for i in range(1, self.generation_count + 1):
             self.run_generation(i, display)
             
         self.plot_results()      
@@ -71,10 +72,11 @@ class Simulator():
         print(generation_index, '.generation')
         
         # normal generation simulation in a standard or random environment        
-        for i in range(self.race_count):
-            print('- {}. race'.format(i + 1))
-            self.model.prepare_generation(self.random_race)
-            self.view.prepare_generation(self.model, display, generation_index)
+        for race_number in range(1, self.race_count + 1):
+            print('- {}. race'.format(race_number))
+            self.model.prepare_generation(self.random_race, race_number)
+            self.view.prepare_generation(self.model, display, generation_index,
+                                         race_number)
             self.run_simulation()
             print('')
             self.view.clear()

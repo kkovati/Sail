@@ -48,7 +48,7 @@ class View:
         self.root.update()
             
     def prepare_generation(self, model, display, generation_index, 
-                           test=False):
+                           race_number=0, test=False):
         """
         Initializes all view objects for display
         """
@@ -57,7 +57,8 @@ class View:
             self.label['text'] = ('Test of ' + str(generation_index) + 
                                   '. generation')
         else:
-            self.label['text'] = str(generation_index) + '. generation'
+            self.label['text'] = (str(generation_index) + '. generation - ' + 
+                                  str(race_number) + '. race')
         self.wind_view = WindView(self.canvas, model.wind)
         self.ship_views = []
         for s in model.population:

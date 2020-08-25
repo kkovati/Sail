@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 class Buoys:
@@ -11,7 +12,9 @@ class Buoys:
         mode : str
             'random' - random number of buoys on random coordinate
             'test' - test race in a square shaped route
-            else - standard race route
+            '1' - standard race route no. 1
+            '2' - standard race route no. 2
+            '3' - standard race route no. 3
         """
         self.buoys = []
         
@@ -28,10 +31,20 @@ class Buoys:
                 y = np.random.uniform(100, 650)
                 self.buoys.append(_Buoy(x,y))
                 
-        else:
+        elif mode == '1':
             coords = [(600,100),(825,200),(700,300),(870,470),(550,500),(550,650),(100,620),(530,290),(120,200)]
             for x, y in coords:
                 self.buoys.append(_Buoy(x,y))
+                
+        elif mode in {'2', '3'}:
+            df = pd.read_json('sail/model_pack/buoy_coordinates.json')
+            for buoy_coords in df[mode + '_race']:
+                x = int(buoy_coords['x'])
+                y = int(buoy_coords['y'])
+                self.buoys.append(_Buoy(x,y))
+                
+        else:
+            raise Exception('Invalid mode parameter')
         
     def __getitem__(self, index):
         return self.buoys[index]
