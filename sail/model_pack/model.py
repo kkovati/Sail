@@ -25,8 +25,12 @@ class Model:
                               'orient': np.random.uniform(0, 2 * math.pi)}
         else:
             self.buoys = Buoys(mode=str(race_number))
-            self.wind = Wind(random=False, orientation=0)        
-            start_position = {'x': 275, 'y': 100, 'orient': 0.18}
+            wind_orients = {1 : 0, 2 : math.pi / 4, 3: math.pi / 2}
+            self.wind = Wind(random=False, 
+                             orientation=wind_orients[race_number])
+            ship_orient = np.random.uniform(0, 0.2) * math.pi
+            start_position = {'x': 275, 'y': 100, 'orient': ship_orient}
+            # start_position = {'x': 275, 'y': 100, 'orient': 0.18}
             
         self.population.prepare_generation(self.buoys, self.wind, 
                                            start_position) 

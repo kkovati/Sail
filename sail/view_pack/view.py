@@ -54,11 +54,11 @@ class View:
         """
         self.display = display
         if test:
-            self.label['text'] = ('Test of ' + str(generation_index) + 
+            self.label['text'] = ('Test of ' + str(generation_index + 1) + 
                                   '. generation')
         else:
-            self.label['text'] = (str(generation_index) + '. generation - ' + 
-                                  str(race_number) + '. race')
+            self.label['text'] = (str(generation_index + 1) + '. generation - '
+                                  + str(race_number) + '. race')
         self.wind_view = WindView(self.canvas, model.wind)
         self.ship_views = []
         for s in model.population:

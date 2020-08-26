@@ -31,12 +31,8 @@ class Buoys:
                 y = np.random.uniform(100, 650)
                 self.buoys.append(_Buoy(x,y))
                 
-        elif mode == '1':
-            coords = [(600,100),(825,200),(700,300),(870,470),(550,500),(550,650),(100,620),(530,290),(120,200)]
-            for x, y in coords:
-                self.buoys.append(_Buoy(x,y))
-                
-        elif mode in {'2', '3'}:
+        elif mode in {'1', '2', '3'}:
+            # pandas dataframe
             df = pd.read_json('sail/model_pack/buoy_coordinates.json')
             for buoy_coords in df[mode + '_race']:
                 x = int(buoy_coords['x'])
@@ -54,6 +50,7 @@ class Buoys:
     
     def __len__(self):
         return len(self.buoys)
+
 
 class _Buoy:
     """

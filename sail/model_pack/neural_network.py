@@ -54,6 +54,14 @@ class NeuralNetwork:
             b *= np.random.uniform(r, 1/r, size=b.shape)
             
     def crossover(self, nn):
+        """
+        Averages the neural network's parameter values with another neural
+        network's
+        Parameters:
+        nn : NeuralNetwork
+        Side effects:
+        - Updates all values of self.weights and self.biases
+        """
         parameters = zip(self.weights, nn.weights, self.biases, nn.biases)
         for w0, w1, b0, b1 in parameters:
             w0 = (w0 + w1) / 2

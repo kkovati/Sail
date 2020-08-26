@@ -26,13 +26,13 @@ if __name__ == '__main__':
   
 
 
-    s = Simulator(nn_architecture=[8,6], 
-                      generation_count=30,
-                      population_size=100,
-                      mutation_rate=30,
-                      random_race=False,
-                      race_count=1)    
-    s.run(display=True) 
+    s = Simulator(nn_architecture=[8,6],
+                  generation_count=100,
+                  population_size=100,
+                  mutation_rate=30,
+                  random_race=True,
+                  race_count=3)    
+    s.run(display=True, disp_from_gen=30) 
 
     
 # =============================================================================

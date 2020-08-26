@@ -10,7 +10,7 @@ class Simulator():
     Acts as a controller between models and views
     """
     def __init__(self, nn_architecture, generation_count, population_size, 
-                 mutation_rate, random_race, race_count=1):
+                 mutation_rate, random_race=True, race_count=1):
         """
         Initalizes Model and View
         Parameters
@@ -24,7 +24,13 @@ class Simulator():
         mutation_rate : int
             change of the neural network parameters during mutation in 
             percentage
-            !!!
+        random_race : boolean
+            if True ships will compete on randomly generated race environment
+            (buoys placement, start position, wind direction), else each
+            generation will compete on the same 3 pre-defined races
+        race_count : int
+            number of random races of each generation
+            (omitted if random_race == False)
         """
         self.nn_architecture = [2] + nn_architecture + [1]
         self.generation_count = generation_count
@@ -38,7 +44,7 @@ class Simulator():
         self.model = Model(self.nn_architecture, self.population_size) 
         self.view = View()
         
-    def run(self, display=False):
+    def run(self, display=False, disp_from_gen=0):
         """
         Runs evolution for given numbers of generations and saves the results
         of the current configuration
@@ -51,14 +57,14 @@ class Simulator():
         self.test_results = np.zeros((self.generation_count), dtype ='int32')
         
         # run the generations
-        for i in range(1, self.generation_count + 1):
-            self.run_generation(i, display)
+        for i in range(self.generation_count):
+            if display and i >= disp_from_gen:
+                self.run_generation(i, display=True)
+            else:
+                self.run_generation(i, display=False)
             
         self.plot_results()      
            
-        # !!!!
-        #self.model.save('simulation_results/best_ship.npz') 
-        # self.view.mainloop()
         self.view.root.destroy()
   
     def run_generation(self, generation_index, display=False):
@@ -122,12 +128,13 @@ class Simulator():
                 lb()             
         
     def evaluate(self):
+        # !!!
         self.model.evaluate()
         
     def evolve(self, generation_index):
         """
         As the evolution progress the mutation rate decays to prevent the
-        osciallation in the performance of the best neural network in each
+        oscillation in the performance of the best neural network in each
         generation
         """
         mr = self.mutation_rate * (1 - 0.1 * (generation_index / 
