@@ -69,7 +69,7 @@ class NeuralNetwork:
             
     def save(self, generation, distance):
         """
-        Saves the neural network into .npz file
+        Saves the neural network into compressed .npz file
         """
         filename = ('simulation_results/' + 
                     str(self.nn_architecture).replace(' ','') + '_'

@@ -66,7 +66,12 @@ class Population:
         generation's simulation results, using the most fit instances
         Elitism: the best 20% of the instances goes directly to the next 
                  generation
-        The other 80% of instances created by mutating the best 20%
+        Mutation: the best 20% of the instances copied 3 times and it's 
+                parameters randomly changed using mutation_rare
+                (makes up 60% of next generation's population)
+        Crossover: averaging the parameters of randomly chosen pairs from 
+                the best 20% of the instances
+                (makes up 20% of the next generation's population)
         """
         # sort neural network population
         self.nn_population = sorted(self.nn_population, 
@@ -80,19 +85,18 @@ class Population:
         for nn in fit_list:
             new_nn_population.append(nn) 
             
-        # mutation (40%)
+        # mutation (60%)
         for nn in fit_list:
-            for i in range(2):
+            for i in range(3):
                 temp_nn = copy.deepcopy(nn)
                 temp_nn.mutate(mutation_rate) 
                 new_nn_population.append(temp_nn)
                 
-        # crossover (40%)
+        # crossover (20%)
         for nn in fit_list:
-            for i in range(2):
-                temp_nn = copy.deepcopy(nn)                
-                temp_nn.crossover(np.random.choice(fit_list)) 
-                new_nn_population.append(temp_nn)
+            temp_nn = copy.deepcopy(nn)                
+            temp_nn.crossover(np.random.choice(fit_list)) 
+            new_nn_population.append(temp_nn)
                 
         # population size of each generation must remain constant
         assert len(self.nn_population) == len(new_nn_population)

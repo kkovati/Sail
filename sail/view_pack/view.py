@@ -74,11 +74,11 @@ class View:
     def update(self, model, time_):
         """
         Calls update method of all view objects        
-        Updates and displays only 10 ship_views at most
+        Updates and displays only 20 ship_views at most
         """
         if not self.display:
             return        
-        for i in range(min(len(self.ship_views), 10)): 
+        for i in range(min(len(self.ship_views), 20)): 
             self.ship_views[i].update(self.canvas, model.population[i])
         time_label = self.canvas.create_text(80, 30, 
                                              text='Time: ' + str(time_), 

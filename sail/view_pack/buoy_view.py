@@ -14,7 +14,8 @@ class BuoyView:
         
         self.index = index + 1
         self.index_view = canvas.create_text(buoy.x - 12, buoy.y - 12,
-                                             text=self.index, font='bold',
+                                             text=self.index, 
+                                             font='Helvetica 16 bold',
                                              fill='yellow')    
         
     def clear(self, canvas):

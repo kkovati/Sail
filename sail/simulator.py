@@ -30,7 +30,7 @@ class Simulator():
             generation will compete on the same 3 pre-defined races
         race_count : int
             number of random races of each generation
-            (omitted if random_race == False)
+            (omitted if random_race=False)
         """
         self.nn_architecture = [2] + nn_architecture + [1]
         self.generation_count = generation_count
@@ -51,7 +51,10 @@ class Simulator():
         Parameters
         ----------
         display : boolean
-            !!!
+            display simulation on GUI (if set False the GUI still appears)
+        disp_from_gen : int
+            display simulation on GUI only from given generation 
+            (omitted if display=False)
         """
         # test results of each generations
         self.test_results = np.zeros((self.generation_count), dtype ='int32')
@@ -72,7 +75,9 @@ class Simulator():
         Runs a single generation's simulation
         Evaluates the neuaral network population by fitness
         Mutates the population
-        Runs the 3 test cases for results with the best neural network        
+        Runs a test race with the best neural network in the current 
+        generation and saves it's result (the best NN will be the first one in
+        the next generation after mutation b/c of elitism)
         """
         print('------------------------------------------')
         print(generation_index, '.generation')
@@ -106,7 +111,7 @@ class Simulator():
         print('Distance sailed on test track:\n{}'.format(int(distance)))
         # save best ship's test distance into test_results
         self.test_results[generation_index] = distance
-        # !!!
+        # if the test result is outstanding that neural network will be saved
         if distance > 1800:
             print('DISTANCE OVER 1800')
             self.model.save(generation_index, distance)
@@ -128,7 +133,11 @@ class Simulator():
                 lb()             
         
     def evaluate(self):
-        # !!!
+        """
+        Orders the list of ships by fitness and updates each ship's rank 
+        accordingly 
+        (for details see :func:`~population.Population.evaluate`)
+        """
         self.model.evaluate()
         
     def evolve(self, generation_index):
@@ -142,7 +151,9 @@ class Simulator():
         self.model.evolve(mr) 
         
     def plot_results(self):
-        
+        """
+        Plots simulation results saved in self.test_results
+        """
         # plt.figure(dpi=300) # for high resolution graphs
         plt.title('Best ship travel distance of each generation')
         plt.xlabel('Generation')
@@ -168,6 +179,13 @@ class Simulator():
         
     @classmethod
     def load_and_test(cls, filename):
+        """
+        Loads and runs a test with the given neural network
+        NN must be in a compressed .npz file
+        Parameters
+        filename : str
+            path of .npz file
+        """
         # init Model and View
         model = Model([], 1) 
         view = View()
