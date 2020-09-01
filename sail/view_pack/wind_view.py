@@ -1,6 +1,7 @@
 from itertools import product
 import tkinter as tk
 
+
 class WindView:
     """
     Displays arrow representation of wind

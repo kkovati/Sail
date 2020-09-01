@@ -40,7 +40,7 @@ The genetic algorithm uses the following strategies during the optimization:
 
 **Evolve**
 
-The new generation is built up with instances created by the genetic operations.
+The new generation is built up with instances created by the genetic operators.
 
 **Physics**
 
@@ -61,7 +61,7 @@ For optimization reasons the following settings can be done:
 ---
 ### Example video of a simulation and analysis
 
-link
+https://youtu.be/wNEWmePgh4I
 
 This linked video shows an evolution progress with the following settings:
 - a simple NN architecture with only one hidden layer of 5 neurons, 

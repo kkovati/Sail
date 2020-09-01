@@ -1,5 +1,4 @@
 import math, cmath
-from .neural_network import NeuralNetwork
 
 
 class Ship:

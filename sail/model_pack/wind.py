@@ -1,6 +1,7 @@
 import math, cmath
 import numpy as np
 
+
 class Wind:
 
     def __init__(self, random=True, orientation=0):

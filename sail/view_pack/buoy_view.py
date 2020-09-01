@@ -2,7 +2,7 @@
 
 class BuoyView:
     """
-    Displays buoy and it's index
+    Displays buoy and its index
     """
     def __init__(self, canvas, buoy, index):
         self.size = 10
