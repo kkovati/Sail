@@ -124,6 +124,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+
+# PyCharm
+.idea/
+
 # Result graphs and saved numpy arrays
 *.png
 *.npz
+
+# Videos
+*.mp4
