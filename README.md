@@ -61,7 +61,7 @@ For optimization reasons the following settings can be done:
 ---
 ### Example video of a simulation and analysis
 
-https://youtu.be/wNEWmePgh4I
+[Simulation video on YouTube](https://youtu.be/wNEWmePgh4I).
 
 This linked video shows an evolution progress with the following settings:
 - a simple NN architecture with only one hidden layer of 5 neurons, 
@@ -78,9 +78,11 @@ but seemingly they always approach the target buoy directly, not paying attentio
 
 This video is edited to show only the relevant parts. (Poor upload resolution) 
  
-The code for this simulation:
+[The code](https://github.com/kkovati/Sail/blob/master/main.py) for this simulation:
  
 ```python
+from sail import Simulator
+
 sim = Simulator(nn_architecture=[5],
                 generation_count=50,
                 population_size=100,
