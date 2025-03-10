@@ -1,10 +1,10 @@
-# Sail
+# 🚢Sail
+
+Neural network learns to control sailing ship with genetic algorithm.
 
 [![Demo](https://github.com/kkovati/Sail/blob/master/docs/demo.gif)](https://youtu.be/wNEWmePgh4I)
 
-Neural network learns to control sailing ship with genetic algorithm.
- 
-**Simulation with genetic algorithm**
+### Simulation with genetic algorithm
  
 The objective of the ships (controlled by neural networks) is to reach all target buoys 
 one after another in the shortest possible time. 
@@ -16,9 +16,6 @@ progresses they start to 'understand' it and become better with each generation.
 
 The implementation of the neural networks and genetic operations done using only NumPy.<br/>
 The GUI is made with Tkinter, visualized with its graphical drawing tools.
- 
-Project done in Python 3.7<br/> 
-IDE: Spyder 4.1.2
  
 **Generations**
  
@@ -62,7 +59,7 @@ For optimization reasons the following settings can be done:
 - Random or pre-fixed races (each generation races on random or on the same map)
 
 ---
-### Example video of a simulation and analysis
+## Demo video of a simulation and analysis
 
 [Simulation video on YouTube](https://youtu.be/wNEWmePgh4I).
 
@@ -75,13 +72,19 @@ This linked video shows an evolution progress with the following settings:
 It can be seen that the first generations do not know what is their goal and just sailing pointless.
 As the simulation advances the ships start to steer better and better towards their target buoy.
 There is a huge jump in performance started from the 14th generation.<br/>
-*Improvement possibilities:* The neural networks could not learn how to efficiently sail upwind by the end
+
+This video is edited to show only the relevant parts. (Poor upload resolution) 
+
+## Plans for improvement 
+
+The neural networks could not learn how to efficiently sail upwind by the end
 of the simulation. The expected strategy is turning away from wind thus reaching greater velocity,
 but seemingly they always approach the target buoy directly, not paying attention the wind direction.
 
-This video is edited to show only the relevant parts. (Poor upload resolution) 
- 
-[The code](https://github.com/kkovati/Sail/blob/master/main.py) for this simulation:
+## Run the simulation
+
+Requires Python 3.7+ and dependencies from requirements.txt (```pip install -r requirements.txt```).<br>
+[The code](https://github.com/kkovati/Sail/blob/master/main.py) for the above simulation:
  
 ```python
 from sail import Simulator
