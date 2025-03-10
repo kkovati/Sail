@@ -17,20 +17,20 @@ progresses they start to 'understand' it and become better with each generation.
 The implementation of the neural networks and genetic operations done using only NumPy.<br/>
 The GUI is made with Tkinter, visualized with its graphical drawing tools.
  
-**Generations**
+### Generations
  
 The simulation is divided into generations. Each generation has a population of different instances (neural networks)
 who are competing against each other. Each generation competes on a randomly generated map 
 where the number and position of the buoys, the wind direction and the start position are random.
 The new generations evolves from the previous ones. 
  
-**Selection based on fitness** 
+### Selection based on fitness
  
 The new generation is created using the best instances and the selection is based on their fitness.
 The fitness is calculated by the performance of the ships (~neural networks) according to how many 
 bouys they reached, how close they approached the next buoy and how much time needed to reach all buoys.
  
-**Genetic operators**
+### Genetic operators
  
 The genetic algorithm uses the following strategies during the optimization:
  
@@ -38,16 +38,16 @@ The genetic algorithm uses the following strategies during the optimization:
 - Mutation: the best selected instances' parameters randomly modified
 - Crossover: averaging the parameters of randomly chosen pairs from the best selected instances 
 
-**Evolve**
+### Evolve
 
 The new generation is built up with instances created by the genetic operators.
 
-**Physics**
+### Physics
 
 The ships sail fastest downwind (in the direction of the wind) and become slower as they turn into
 upwind (opposite of wind). Also the ships get speed penalty if they steer too rapidly. 
 
-**Simulation settings**
+### Simulation settings
 
 For optimization reasons the following settings can be done:
 
@@ -75,12 +75,6 @@ There is a huge jump in performance started from the 14th generation.<br/>
 
 This video is edited to show only the relevant parts. (Poor upload resolution) 
 
-## Plans for improvement 
-
-The neural networks could not learn how to efficiently sail upwind by the end
-of the simulation. The expected strategy is turning away from wind thus reaching greater velocity,
-but seemingly they always approach the target buoy directly, not paying attention the wind direction.
-
 ## Run the simulation
 
 Requires Python 3.7+ and dependencies from requirements.txt (```pip install -r requirements.txt```).<br>
@@ -99,3 +93,8 @@ sim = Simulator(nn_architecture=[5],
 sim.run(display=True, disp_from_gen=0)
 ```
 
+## Plans for improvement 
+
+The neural networks could not learn how to efficiently sail upwind by the end
+of the simulation. The expected strategy is turning away from wind thus reaching greater velocity,
+but seemingly they always approach the target buoy directly, not paying attention the wind direction.
