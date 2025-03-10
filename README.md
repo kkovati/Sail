@@ -83,12 +83,13 @@ Requires Python 3.7+ and dependencies from requirements.txt (```pip install -r r
 ```python
 from sail import Simulator
 
-sim = Simulator(nn_architecture=[5],
-                generation_count=50,
-                population_size=100,
-                mutation_rate=30,
-                random_race=True,
-                race_count=2)    
+sim = Simulator(
+    nn_architecture=[5],
+    generation_count=50,
+    population_size=100,
+    mutation_rate=30,
+    random_race=True,
+    race_count=2)    
 
 sim.run(display=True, disp_from_gen=0)
 ```
