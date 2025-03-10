@@ -1,4 +1,7 @@
 # Sail
+
+[![Demo](https://github.com/kkovati/Sail/blob/master/docs/demo.gif)](https://youtu.be/wNEWmePgh4I)
+
 Neural network learns to control sailing ship with genetic algorithm.
  
 **Simulation with genetic algorithm**
